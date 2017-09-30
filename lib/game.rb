@@ -1,7 +1,12 @@
 class Game
+  # shoul the rules of the game should still be 3 in a row
+  # it'd be easy to test for the full row
   attr_accessor :board, :player_1, :player_2
 
-  def initialize(board, player_1, player_2)
+  def initialize(board_size = 3, player_1, player_2)
+    @board = Board.new(board_size)
+    @player_1 = player_1
+    @player_2 = player_2
   end
 
   def play
