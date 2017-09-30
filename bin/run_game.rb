@@ -1,2 +1,5 @@
 #!/usr/bin/env ruby
-require all '../lib/'
+require_relative '../config/environment.rb'
+
+g = Game.new
+g.play

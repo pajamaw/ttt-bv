@@ -102,7 +102,25 @@ describe "Game" do
       expect{pvp_game.turn}.to output.to_stdout
       expect(pvp_game.board.cells).to eq([[" ", " ", " "], ["O", "X", " "], [" ", " ", " "]])
 
-      default_game.board.reset!
+      pvp_game.board.reset!
+    end
+  end
+  describe "#won?" do
+    it "checks the current state of the board cell for three player tokens in a row and returns the winning token" do
+      default_game.board.count = 5
+      default_game.board.cells = [[" ", " ", " "], ["X", "X", "X"], [" ", " ", " "]]
+      expect(default_game.won?(1, 0, "X")).to eq("X")
+
+      default_game.board.cells = [[" ", " ", " "], ["X", "X", "X"], [" ", " ", " "]]
+      expect(default_game.won?(1, 1, "X")).to eq("X")
+
+    end
+    it "returns false for a non-winning combination" do
+      expect(default_game.won?(0, 0, "X")).to eq(false)
+    end
+    it "short circuits and returns false when the count is lower than one minus double the grid_size" do
+      default_game.board.count = 1
+      expect(default_game.won?(0, 0, "X")).to eq(false)
     end
   end
 end
