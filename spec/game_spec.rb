@@ -1,81 +1,108 @@
-
 describe "Game" do
+  let(:human_playerx){Human.new("X")}
+  let(:human_playero){Human.new("O")}
+  let(:computer_playerx){Computer.new("X")}
+  let(:computer_playero){Computer.new("O")}
   let(:board){Board.new}
   let(:board5){Board.new(5)}
-  describe '#grid_size' do
-    it "is an attribute that represents the dimension of the array with a default value of 3" do
-      expect(board).to respond_to(:grid_size)
-      expect(board.grid_size).to eq(3)
-      expect(board5.grid_size).to eq(5)
-    end
-  end
-  describe '#cells' do
-    it "is an attribute which is a nested array of player values which represent the playing board with the dimensions of #grid_size" do
-      expect(board).to respond_to(:cells)
-      expect(board.cells).to eq ([[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]])
-      expect(board5.cells).to eq([[" ", " ", " ", " ", " "], [" ", " ", " ", " ", " "], [" ", " ", " ", " ", " "], [" ", " ", " ", " ", " "], [" ", " ", " ", " ", " "]])
-    end
-    it "is has a setter" do
-      expect(board).to respond_to(:cells=)
 
-      board.cells = []
-      expect(board.cells).to eq([])
-    end
-  end
-  describe '#count' do
-    it "is an attribute that persists the number of tokens on a board which initializes with a value of 0" do
-      expect(board).to respond_to(:count)
-      expect(board.count).to eq(0)
-    end
-    it "is has a setter" do
-      expect(board).to respond_to(:count=)
+  let(:default_game) {Game.new}
+  let(:pvp_game) {Game.new(board, human_playerx, human_playero)}
 
-      board.count += 1
-      expect(board.count).to eq(1)
-    end
-  end
-  describe '#update' do
-    it "adds a player token to the cells nested array" do
-      expect(board).to respond_to(:update)
-      expect(board.update(1,1,"X")).to eq([[" ", " ", " "], [" ", "X", " "], [" ", " ", " "]])
-    end
-    it "increases count each time the board is updated" do
-      expect(board.count).to eq(0)
-      board.update(1,1,"X")
-      expect(board.count).to eq(1)
-    end
-  end
-  describe '#full_board?' do
-    it "returns false if the count doesn't equal the gridsize squared" do
-      expect(board).to respond_to(:full_board?)
-      board.update(0,0, "X")
-      expect(board.full_board?).to eq(false)
-    end
-    it "returns true if the count equals the gridsize squared" do
-      expect(board).to respond_to(:full_board?)
-      board.count = 9
-      expect(board.full_board?).to eq(true)
-    end
-  end
-  describe '#display_board' do
-    it "prints the a visual board representation based upon the array" do
-      visual_board = "   |   |   \n --------- \n   |   |   \n --------- \n   |   |   \n"
-      expect(board).to respond_to(:display_board)
-      expect{board.display_board}.to output.to_stdout
-      expect{board.display_board}.to output(visual_board).to_stdout
-    end
-    it "prints updated visual board representation based upon the array" do
-      visual_board = "   | X |   \n --------- \n   |   |   \n --------- \n   |   |   \n"
-      board.update(0, 1, "X")
-      expect{board.display_board}.to output.to_stdout
-      expect{board.display_board}.to output(visual_board).to_stdout
-    end
-    it "prints out different sized boards according to the grid_size" do
-      visual_board = " X |   |   |   |   \n --------- \n   |   |   |   |   \n --------- \n   |   |   |   |   \n --------- \n   |   |   |   |   \n --------- \n   |   |   |   |   \n"
-      board5.update(0, 0, "X")
-      expect{board5.display_board}.to output.to_stdout
-      expect{board5.display_board}.to output(visual_board).to_stdout
-    end
-  end
+  let(:game_5) {Game.new(board5)}
 
+  describe "#initialize" do
+    it " has a board attribute with a default value of a 3 x 3 nested array" do
+      expect(default_game).to respond_to(:board)
+      expect(default_game.board).to be_an_instance_of(Board)
+    end
+    it " has a player_1 attribute with a default value of a Human instance" do
+      expect(default_game).to respond_to(:player_1)
+      expect(default_game.player_1).to be_an_instance_of(Human)
+    end
+    it " has a player_2 attribute with a default value of a Computer instance" do
+      expect(default_game).to respond_to(:player_2)
+      expect(default_game.player_2).to be_an_instance_of(Computer)
+    end
+  end
+  describe "#user_input_to_nested_index" do
+    it "converts a string number referencing the visual board into an array for row and position" do
+      input = "1"
+      expect(default_game.user_input_to_nested_index(input)).to eq([0,0])
+    end
+    it "converts a string number referencing the visual board into an array for row and position" do
+      input = "5"
+      expect(default_game.user_input_to_nested_index(input)).to eq([1,1])
+    end
+    it "converts a string number referencing the visual board into an array for row and position for larger boards" do
+      input = "7"
+      expect(game_5.user_input_to_nested_index(input)).to eq([1,1])
+    end
+  end
+  describe "#valid_move?" do
+    it "returns true if the position in the board is not taken" do
+      expect(default_game.valid_move?(0, 0)).to eq(true)
+    end
+    it "returns false if the position in the board is taken" do
+      default_game.board.update(0,0, "X")
+      expect(default_game.valid_move?(0, 0)).to eq(false)
+      default_game.board.reset!
+    end
+  end
+  describe "#current_player" do
+    it "returns player_1 if the turn_count is even" do
+      expect(default_game.current_player).to eq(default_game.player_1)
+    end
+    it "returns player_2 if the turn_count is odd" do
+      default_game.board.update(0, 0, "X")
+      expect(default_game.current_player).to eq(default_game.player_2)
+      default_game.board.reset!
+    end
+  end
+  describe "#turn" do
+    it "asks the current_user's for input" do
+      # need to have these two line for every single test with get's
+      expect(default_game.player_1).to receive(:gets).and_return("1")
+      expect{default_game.turn}.to output.to_stdout
+      default_game.board.reset!
+    end
+    it "checks to see if the input is valid" do
+      input = "1"
+      expect(default_game.player_1).to receive(:gets).and_return(input)
+      row, position = default_game.user_input_to_nested_index(input)
+      expect(default_game.valid_move?(row, position)).to eq(true)
+      expect{default_game.turn}.to output.to_stdout
+      default_game.board.reset!
+    end
+    it "if valid it updates the board with the input" do
+      input = "3"
+      expect(default_game.player_1).to receive(:gets).and_return(input)
+      expect{default_game.turn}.to output.to_stdout
+      expect(default_game.board.cells).to eq([[" ", " ", "X"], [" ", " ", " "], [" ", " ", " "]])
+      default_game.board.reset!
+    end
+    it "if valid it updates the board with the input" do
+      input = "5"
+      expect(default_game.player_1).to receive(:gets).and_return(input)
+      expect{default_game.turn}.to output.to_stdout
+      expect(default_game.board.cells).to eq([[" ", " ", " "], [" ", "X", " "], [" ", " ", " "]])
+      default_game.board.reset!
+    end
+    it "if not valid it does not update the board" do
+      input = "5"
+      expect(pvp_game.player_1).to receive(:gets).and_return(input)
+      expect{pvp_game.turn}.to output.to_stdout
+      expect(pvp_game.board.cells).to eq([[" ", " ", " "], [" ", "X", " "], [" ", " ", " "]])
+
+      invalid_input = "11"
+      #basically checking an invalid input and a spot taken
+      expect(pvp_game.player_2).to receive(:gets).and_return(invalid_input)
+      expect(pvp_game.player_2).to receive(:gets).and_return("5")
+      expect(pvp_game.player_2).to receive(:gets).and_return("4")
+      expect{pvp_game.turn}.to output.to_stdout
+      expect(pvp_game.board.cells).to eq([[" ", " ", " "], ["O", "X", " "], [" ", " ", " "]])
+
+      default_game.board.reset!
+    end
+  end
 end

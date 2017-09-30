@@ -44,4 +44,9 @@ class Board
     end
     puts board
   end
+  # added for testing purposes really
+  def reset!
+    # can't set it to cells for some reason
+    @cells = Array.new(grid_size) { Array.new(grid_size, " ")}
+  end
 end
