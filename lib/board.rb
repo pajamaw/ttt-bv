@@ -39,7 +39,7 @@ class Board
         j == grid_size - 1 ? board = board[0...-1] : nil
         j += 1
       end
-      i != grid_size - 1 ? board.concat("\n --------- \n") : nil
+      i != grid_size - 1 ? board.concat("\n #{"--- "*grid_size} \n") : nil
       i += 1
     end
     puts board
