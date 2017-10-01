@@ -1,13 +1,14 @@
 class Game
   # shoul the rules of the game should still be 3 in a row
   # it'd be easy to test for the full row
-  attr_accessor :board, :player_1, :player_2, :winner
+  attr_accessor :board, :player_1, :player_2, :winner, :last_move
 
   def initialize(board = Board.new, player_1 = Human.new("X"), player_2 = Computer.new("O"))
     @board = board
     @player_1 = player_1
     @player_2 = player_2
     @winner = nil
+    @last_move = [nil, nil]
   end
 
   def make_random
@@ -16,10 +17,11 @@ class Game
     if rand(1..1000).even?
       @player_1, @player_2 = player_2, player_1
     end
-    puts "By random selection: Player #{@player_1} goes first!"
+    puts "By random selection: Player #{@player_1.token} goes first!"
   end
 
   def play
+    board.display_board
     until @winner || draw?
       turn
     end
@@ -32,12 +34,14 @@ class Game
 
   def turn
     puts "Please make your move: Player #{current_player.token}"
-    board.display_board
-    input = current_player.move(board)
+    input = current_player.move(board, @last_position)
+    # save the previous row and position not fair for the comp
     row, position = user_input_to_nested_index(input)
-    if valid_move?(row, position)
+    if board.valid_move?(row, position)
+      @last_position = [row, position]
       c_p_token = current_player.token
       board.update(row, position, c_p_token)
+      board.display_board
       won?(row, position, c_p_token) ? @winner = won?(row, position, c_p_token) : nil
     else
       puts "Invalid position"
@@ -91,6 +95,7 @@ class Game
       # row, col and previous player
     # bam! in 0(log(n))
     i = 0
+    j = board.grid_size-1
     row_win = 0
     col_win = 0
     diag_win = 0
@@ -115,13 +120,14 @@ class Game
           return player_token
         end
       end
-      if board.cells[i][board.grid_size-i+1] == player_token
+      if board.cells[i][j] == player_token
         back_diag_win+=1
         if back_diag_win == board.grid_size
-          return previous_player
+          return player_token
         end
       end
       i+=1
+      j-=1
     end
     false
   end
@@ -132,15 +138,13 @@ class Game
 
   # this is more a helper method
   def user_input_to_nested_index(input)
+    if input.is_a?(Array)
+      return input
+    end
     # probably should output an object for clarity
     row = ((input.to_i - 1) >= board.grid_size ? (input.to_i - 1) / board.grid_size : 0)
     position = ((input.to_i) <= board.grid_size ? input.to_i - 1 : (input.to_i - 1) % board.grid_size)
     [row, position]
-  end
-
-  def valid_move?(row, position)
-    # need to shortcirtuit for position
-    board.cells[row] && board.cells[row][position] == " "
   end
 
 end

@@ -77,5 +77,14 @@ describe "Board" do
       expect{board5.display_board}.to output(visual_board).to_stdout
     end
   end
-
+  describe "#valid_move?" do
+    it "returns true if the position in the board is not taken" do
+      expect(board.valid_move?(0, 0)).to eq(true)
+    end
+    it "returns false if the position in the board is taken" do
+      board.update(0,0, "X")
+      expect(board.valid_move?(0, 0)).to eq(false)
+      board.reset!
+    end
+  end
 end

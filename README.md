@@ -15,29 +15,24 @@ Rough overview
     - **board**
     - **player**
       - computer
-        - let's add some difficulties
-          - ** easy (random) **
-          - medium
-          - unbeatable
+        - unbeatable
       - **human**
   - rules
-    - should i say that you must win according to game size?
+    - **should i say that you must win according to game size?**
     - or that it's always just three?
       - could do both i guess since the first is already implemented
   - cli
-    - make a help command
     - outline game
-      - PvP, PvC, CvC?
-        - choose who's what token
+      - **PvP, PvC, CvC?**
+        - **choose who's what token
       - Decide on size of board
       - **random first player**
       - play game
         - winner is declared
       - recursive to go through steps again
     - write test -> add code
-    - add additional features
+    - **add additional features**
       - **make it adjustable**
         - change the rules?
       - **random first**
       - make it a downloadable gem
-      - keep score?

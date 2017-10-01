@@ -13,7 +13,7 @@ describe "Computer" do
     it "asks for user input then returns it" do
       expect(human_playerx).to respond_to(:move)
       expect(human_playerx).to receive(:gets).and_return("1")
-      expect(human_playerx.move([])).to eq("1")
+      expect(human_playerx.move([], [])).to eq("1")
     end
   end
 end

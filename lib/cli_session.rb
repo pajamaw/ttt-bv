@@ -132,6 +132,7 @@ class CliSession
       puts "2) 'O' to have first turn"
       puts "3) Random turn"
       puts "4) Return to Welcome"
+      input = gets.strip
       if input.to_i.between?(1,4)
         if input.to_i.between?(1,2)
           if input.to_i == 1

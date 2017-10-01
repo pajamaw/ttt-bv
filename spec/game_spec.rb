@@ -39,16 +39,7 @@ describe "Game" do
       expect(game_5.user_input_to_nested_index(input)).to eq([1,1])
     end
   end
-  describe "#valid_move?" do
-    it "returns true if the position in the board is not taken" do
-      expect(default_game.valid_move?(0, 0)).to eq(true)
-    end
-    it "returns false if the position in the board is taken" do
-      default_game.board.update(0,0, "X")
-      expect(default_game.valid_move?(0, 0)).to eq(false)
-      default_game.board.reset!
-    end
-  end
+
   describe "#current_player" do
     it "returns player_1 if the turn_count is even" do
       expect(default_game.current_player).to eq(default_game.player_1)
@@ -70,7 +61,7 @@ describe "Game" do
       input = "1"
       expect(default_game.player_1).to receive(:gets).and_return(input)
       row, position = default_game.user_input_to_nested_index(input)
-      expect(default_game.valid_move?(row, position)).to eq(true)
+      expect(default_game.board.valid_move?(row, position)).to eq(true)
       expect{default_game.turn}.to output.to_stdout
       default_game.board.reset!
     end

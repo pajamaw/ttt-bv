@@ -22,6 +22,11 @@ class Board
     @count +=1
     @cells
   end
+  # this is definitely more of a board sort of move
+  def valid_move?(row, position)
+    # need to shortcirtuit for position
+    cells[row] && cells[row][position] == " "
+  end
 
   def display_board
     board = ""
