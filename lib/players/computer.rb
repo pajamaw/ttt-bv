@@ -1,6 +1,11 @@
 class Computer < Player
-  def move(grid_size)
+  def move(board)
     # just a place holder for now
-    rand(1...grid_size**2)
+    rand(1...board.grid_size**2)
+  end
+
+
+  def check_board
+
   end
 end

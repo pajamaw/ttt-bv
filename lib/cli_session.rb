@@ -33,7 +33,7 @@ class CliSession
   end
 
   def create_game
-    game = Game.new(board: Board.new(@size_of_grid), player_1: @player_positions[0], player_2: @player_positions[1])
+    game = Game.new(Board.new(@size_of_grid), @player_positions[0], @player_positions[1])
     if @random
       game.make_random
     end

@@ -3,7 +3,7 @@ class Game
   # it'd be easy to test for the full row
   attr_accessor :board, :player_1, :player_2, :winner
 
-  def initialize(board: board = Board.new, player_1: player_1 = Human.new("X"), player_2: player_2 = Computer.new("O"))
+  def initialize(board = Board.new, player_1 = Human.new("X"), player_2 = Computer.new("O"))
     @board = board
     @player_1 = player_1
     @player_2 = player_2
@@ -33,7 +33,7 @@ class Game
   def turn
     puts "Please make your move: Player #{current_player.token}"
     board.display_board
-    input = current_player.move(board.grid_size)
+    input = current_player.move(board)
     row, position = user_input_to_nested_index(input)
     if valid_move?(row, position)
       c_p_token = current_player.token

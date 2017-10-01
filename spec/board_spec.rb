@@ -59,19 +59,19 @@ describe "Board" do
   end
   describe '#display_board' do
     it "prints the a visual board representation based upon the array" do
-      visual_board = "   |   |   \n --------- \n   |   |   \n --------- \n   |   |   \n"
+      visual_board = "  1 |  2 |  3 \n ---- ---- ----  \n  4 |  5 |  6 \n ---- ---- ----  \n  7 |  8 |  9 \n"
       expect(board).to respond_to(:display_board)
       expect{board.display_board}.to output.to_stdout
       expect{board.display_board}.to output(visual_board).to_stdout
     end
     it "prints updated visual board representation based upon the array" do
-      visual_board = "   | X |   \n --------- \n   |   |   \n --------- \n   |   |   \n"
+      visual_board = "  1 |  X |  3 \n ---- ---- ----  \n  4 |  5 |  6 \n ---- ---- ----  \n  7 |  8 |  9 \n"
       board.update(0, 1, "X")
       expect{board.display_board}.to output.to_stdout
       expect{board.display_board}.to output(visual_board).to_stdout
     end
     it "prints out different sized boards according to the grid_size" do
-      visual_board = " X |   |   |   |   \n --------- \n   |   |   |   |   \n --------- \n   |   |   |   |   \n --------- \n   |   |   |   |   \n --------- \n   |   |   |   |   \n"
+      visual_board = "  X |  2 |  3 |  4 |  5 \n ---- ---- ---- ---- ----  \n  6 |  7 |  8 |  9 | 10 \n ---- ---- ---- ---- ----  \n 11 | 12 | 13 | 14 | 15 \n ---- ---- ---- ---- ----  \n 16 | 17 | 18 | 19 | 20 \n ---- ---- ---- ---- ----  \n 21 | 22 | 23 | 24 | 25 \n"
       board5.update(0, 0, "X")
       expect{board5.display_board}.to output.to_stdout
       expect{board5.display_board}.to output(visual_board).to_stdout

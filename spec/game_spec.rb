@@ -7,7 +7,7 @@ describe "Game" do
   let(:board5){Board.new(5)}
 
   let(:default_game) {Game.new}
-  let(:pvp_game) {Game.new(board, human_playerx, human_playero)}
+  let(:pvp_game) { Game.new(board, human_playerx, human_playero) }
 
   let(:game_5) {Game.new(board5)}
 
@@ -113,8 +113,8 @@ describe "Game" do
 
       default_game.board.cells = [[" ", " ", " "], ["X", "X", "X"], [" ", " ", " "]]
       expect(default_game.won?(1, 1, "X")).to eq("X")
-
     end
+
     it "returns false for a non-winning combination" do
       expect(default_game.won?(0, 0, "X")).to eq(false)
     end

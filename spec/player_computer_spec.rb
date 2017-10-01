@@ -11,10 +11,10 @@ describe "Computer" do
   end
   describe '#move' do
     it "randomly selects an integer between 1 and the size of the grid squared" do
-      grid_size = 3
+      board = Board.new
       expect(comp_playerx).to respond_to(:move)
-      expect(comp_playerx.move(grid_size)).to be > 0
-      expect(comp_playerx.move(grid_size)).to be < 10
+      expect(comp_playerx.move(board)).to be > 0
+      expect(comp_playerx.move(board)).to be < 10
     end
   end
 end
