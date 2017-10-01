@@ -1,3 +1,3 @@
-require 'bundler'
-Bundler.require
-require_all 'lib'
+Dir.glob(File.join('../lib', '**', '*.rb')).each {|f| require f}
+require_relative '../lib/cli_session.rb'
+#for some reason this file wont' load
