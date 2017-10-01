@@ -52,9 +52,21 @@ class Board
     end
     puts board
   end
+
+  def user_input_to_nested_index(input)
+    if input.is_a?(Array)
+      return input
+    end
+    # probably should output an object for clarity
+    row = ((input.to_i - 1) >= grid_size ? (input.to_i - 1) / grid_size : 0)
+    position = ((input.to_i) <= grid_size ? input.to_i - 1 : (input.to_i - 1) % grid_size)
+    [row, position]
+  end
+
   # added for testing purposes really
   def reset!
     # can't set it to cells for some reason
     @cells = Array.new(grid_size) { Array.new(grid_size, " ")}
   end
+
 end

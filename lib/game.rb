@@ -1,14 +1,28 @@
+require 'pry'
 class Game
   # shoul the rules of the game should still be 3 in a row
   # it'd be easy to test for the full row
-  attr_accessor :board, :player_1, :player_2, :winner, :last_move
+  attr_accessor :board, :player_1, :player_2, :winner, :last_move, :win_length
 
-  def initialize(board = Board.new, player_1 = Human.new("X"), player_2 = Computer.new("O"))
+  def initialize(board = Board.new, player_1 = Human.new("X"), player_2 = Computer.new("O"), win_length = nil)
     @board = board
-    @player_1 = player_1
-    @player_2 = player_2
+    self.player_1 = player_1
+    self.player_2 = player_2
     @winner = nil
-    @last_move = [nil, nil]
+    @last_move = nil
+    @win_length = win_length || board.grid_size
+  end
+
+  def player_1=(player_1)
+    @player_1 = player_1
+    @player_1.game = self
+    @player_1
+  end
+
+  def player_2=(player_2)
+    @player_2 = player_2
+    @player_2.game = self
+    @player_2
   end
 
   def make_random
@@ -25,26 +39,26 @@ class Game
     until @winner || draw?
       turn
     end
-    if @winner
-      puts "congrats #{@winner}"
-    else
-      puts "cats game"
-    end
+    @winner ? (puts "Congratulations Player #{@winner}") : (puts "cats game")
   end
 
   def turn
     puts "Please make your move: Player #{current_player.token}"
-    input = current_player.move(board, @last_position)
+    current_player.last_move = @last_move
+    input = current_player.move
+    puts "#{input}"
     # save the previous row and position not fair for the comp
-    row, position = user_input_to_nested_index(input)
+    row, position = board.user_input_to_nested_index(input)
     if board.valid_move?(row, position)
-      @last_position = [row, position]
+      @last_move = [row, position]
+      #persisting this for the use of the computer
       c_p_token = current_player.token
       board.update(row, position, c_p_token)
       board.display_board
       won?(row, position, c_p_token) ? @winner = won?(row, position, c_p_token) : nil
     else
       puts "Invalid position"
+      board.display_board
       turn
     end
   end
@@ -58,93 +72,93 @@ class Game
   end
 
   def won?(row, col, player_token)
-    #short circuit
-
-    # what if i created a data structure that when it
-    # updated a position - it also added a value to each node/element
-    # around it - and then that element would have an action that fires
-    # when that specific attribute reaches it's firing
-
-    # what if i could add to each of the
-    if turn_count < board.grid_size * 2 - 1
+    if turn_count < (win_length * 2) - 1
       return false
     end
-    # the best idea might be to do this in a linked list sort of way
-    # depth first?
-    # check for token if none move to next
-    # once you have a token check if neighbor is same token
-
-    # should i do a map instead?
-      # position
-        # topleft - top middle top right
-        # ml val mr -
-        # bl bm br
-
-    # what if i assign a value for each token
-    # then have every row column and diagonal maintain a sum
-    # and once it equals a certain value we know there's a winner
-    # 1 & 4
-    # once a set equals either 12 or 3 there's a winner
-    # and you'd just have to check the 7 set's
-    # update would have to add the value to
-    # the set's being
-
-
-    # there are 4 cases going row, col, diag, and bdiag
-    #
-      # row, col and previous player
-    # bam! in 0(log(n))
-    i = 0
-    j = board.grid_size-1
+    i = -2
     row_win = 0
     col_win = 0
     diag_win = 0
     back_diag_win = 0
-
     while i < board.grid_size
-      if board.cells[row][i] == player_token
-        row_win+=1
-        if row_win == board.grid_size
-          return player_token
+      if !(col+i < 0)
+        if board.cells[row][col+i] == player_token
+          row_win+=1
+          if row_win == win_length
+            return player_token
+          end
+        else
+          # restarts if not 0
+          row_win = 0
         end
       end
-      if board.cells[i][col] ==player_token
-        col_win+=1
-        if col_win == board.grid_size
-          return player_token
+      if !(row + i < 0)
+        if board.cells[row+i] && board.cells[row+i][col] == player_token
+          col_win+=1
+          if col_win == win_length
+            return player_token
+          end
+        else
+          col_win = 0
         end
       end
-      if board.cells[i][i] == player_token
-        diag_win+=1
-        if diag_win == board.grid_size
-          return player_token
+      if !(col + i < 0 || row + i < 0)
+        if board.cells[row+i] && board.cells[row+i][col+i] == player_token
+          diag_win+=1
+          if diag_win == win_length
+            return player_token
+          end
+        else
+          diag_win=0
         end
       end
-      if board.cells[i][j] == player_token
-        back_diag_win+=1
-        if back_diag_win == board.grid_size
-          return player_token
+      # need to ensure that if it's negative that it doesn't go crazy
+      if !(col - i < 0 || row + i < 0)
+        if board.cells[row+i] && board.cells[row+i][col-i] == player_token
+          back_diag_win+=1
+          if back_diag_win == win_length
+            return player_token
+          end
+        else
+          back_diag_win=0
         end
       end
       i+=1
-      j-=1
     end
     false
+    # in order for this to work you need a whole different idea for diagonals
+    # since you don't need to just check the middle you need to check combo's in a row
+  #   1 |  2 |  x |  4 |  5 |  6
+  #  ---- ---- ---- ---- ---- ----
+  #   7 |  x |  9 | 10 | 11 | 12
+  #  ---- ---- ---- ---- ---- ----
+  #  x | 14 | 15 | 16 | o | 18
+  #  ---- ---- ---- ---- ---- ----
+  #  19 | 20 | 21 | o | 23 | 24
+  #  ---- ---- ---- ---- ---- ----
+  #  25 | 26 | o | 28 | 29 | 30
+  #  ---- ---- ---- ---- ---- ----
+  #  31 | 32 | 33 | 34 | 35 | 36
+  # actually it may be easier
+  # you can get this done with two conditions on each side
+  # either the last element put in is the middle one
+  # or it's one of the ends
+  # so you check
+
+  # 1) x+1, y+1 && x+2, y+2 bottom left of asc
+  # 2) x-1, y-1 && x-2, y-2 top right of asc
+
+  # 3) x-1, y-1 && x+1, y+1 middle ascending
+  # 4) x-1, y+1 && x+1, y-1 middle descending
+
+  # 5) x+1, y-1 && x+2, y-2 top left of desc
+  # 6) x-1, y+1 && x-2, y+2 bottom right of desc
+
   end
+
 
   def draw?
     board.full_board?
-  end
-
-  # this is more a helper method
-  def user_input_to_nested_index(input)
-    if input.is_a?(Array)
-      return input
-    end
-    # probably should output an object for clarity
-    row = ((input.to_i - 1) >= board.grid_size ? (input.to_i - 1) / board.grid_size : 0)
-    position = ((input.to_i) <= board.grid_size ? input.to_i - 1 : (input.to_i - 1) % board.grid_size)
-    [row, position]
   end
 
 end
