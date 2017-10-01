@@ -29,17 +29,20 @@ class Board
     # is there anyway that I can persist this somehow?
     # some meta programming
     # despite the double loops it's still just going in O(n) time
-
+    position = 1
     while i < grid_size
       j = 0
       while j < grid_size
         # the board could get pretty big so it may be tough to pick spots unless
         # they're listed out
-        board.concat(" #{@cells[i][j]} |")
+        board.concat(" #{@cells[i][j] == " " ? "#{position < 10 ? " #{position}" : "#{position}"}" : " #{@cells[i][j]}"} |")
+        # what i'm doing here in this nested ternary - is ensuring that there's equal spacing on the board
+
         j == grid_size - 1 ? board = board[0...-1] : nil
         j += 1
+        position+=1
       end
-      i != grid_size - 1 ? board.concat("\n #{"--- "*grid_size} \n") : nil
+      i != grid_size - 1 ? board.concat("\n #{"---- "*grid_size} \n") : nil
       i += 1
     end
     puts board

@@ -3,11 +3,24 @@ class Game
   # it'd be easy to test for the full row
   attr_accessor :board, :player_1, :player_2, :winner
 
-  def initialize(board = Board.new, player_1 = Human.new("X"), player_2 = Computer.new("O"))
+  def initialize(board: board = Board.new, player_1: player_1 = Human.new("X"), player_2: player_2 = Computer.new("O"))
     @board = board
     @player_1 = player_1
     @player_2 = player_2
     @winner = nil
+  end
+
+  def make_random
+    curr_player_1 = @player_1
+    curr_player_2 = @player_2
+    if rand(1..1000).even?
+      @player_1, @player_2 = player_2, player_1
+    end
+    if @player_1 != curr_player_1
+      puts "Positions swapped!"
+    else
+      puts "Positions stayed the same!"
+    end
   end
 
   def play
@@ -76,9 +89,11 @@ class Game
     # update would have to add the value to
     # the set's being
 
+
     # there are 4 cases going row, col, diag, and bdiag
     #
       # row, col and previous player
+    # bam! in 0(log(n))
     i = 0
     row_win = 0
     col_win = 0
