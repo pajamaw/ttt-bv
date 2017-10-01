@@ -1,5 +1,8 @@
 # ttt-bv
 
+# How to run
+Clone the repository then run `ruby bin/run_game`
+
 Rough overview
 - include examples of
   - **inheritance**

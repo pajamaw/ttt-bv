@@ -16,11 +16,7 @@ class Game
     if rand(1..1000).even?
       @player_1, @player_2 = player_2, player_1
     end
-    if @player_1 != curr_player_1
-      puts "Positions swapped!"
-    else
-      puts "Positions stayed the same!"
-    end
+    puts "By random selection: Player #{@player_1} goes first!"
   end
 
   def play
