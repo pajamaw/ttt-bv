@@ -39,6 +39,17 @@ And follow along with the directions!
     - as a negative number would flip position to the other side of the array and allow for possibilities where a combination wins that isn't connected in the middle
   - if the winner is not found once the counter reaches the length of the board size it returns false
 
+### How the AI works
+  - o(1) space and o(a+b) time
+  - the positions it relies upon
+    - for blocking moves - it relies on the human players last move (we can see their moves so why can't they see ours? )
+    - for winning moves - it relies upon it's own previous position
+  - The AI works in a similar way to the won? method
+  - instead of just adding to a counter though
+    - it adds one to a counter if the same token
+    - subtracts one from counter if opponent token
+  - if a counter reaches one minus the winning combination for either token (absolute) that space is returned
+  - if not then it returns nil and either the middle token is selected, a corner, or a neighbor of the original computer move
 
 ### Rough overview
 - include examples of
