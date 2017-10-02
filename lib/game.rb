@@ -54,10 +54,9 @@ class Game
     if board.valid_move?(row, position)
       @last_move = [row, position]
       #persisting this for the use of the computer
-      c_p_token = current_player.token
       # persisting for the use of won
-      board.update(row, position, c_p_token)
-      won?(row, position, c_p_token) ? @winner = won?(row, position, c_p_token) : nil
+      board.update(row, position, current_player.token)
+      won? ? @winner = won? : nil
     else
       puts "Invalid position"
       board.display_board
@@ -74,10 +73,12 @@ class Game
     board.count
   end
 
-  def won?(row, col, player_token)
+  def won?
     if turn_count < (win_length * 2) - 1
       return false
     end
+    row, col = @last_move
+    player_token = board.cells[row][col]
     i = -(win_length - 1)
     row_win = 0
     col_win = 0
