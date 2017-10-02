@@ -30,10 +30,12 @@ class Computer < Player
   end
 
   def middle_position
+    # basic advantageous spot
     [(game.board.grid_size/2), (game.board.grid_size/2)]
   end
 
   def grab_corner_position
+    # basic advantageous spot
     [[0, game.board.grid_size-1], [game.board.grid_size-1, game.board.grid_size-1], [0,0], [game.board.grid_size-1, 0]].sample
   end
 
@@ -48,17 +50,7 @@ class Computer < Player
   end
 
   def check_for_block
-    # similar logic to the win checker
-    # only this should check for 2 and then strike
-    # so ultimately should just check
-    # for a winner or a block
-    # now what we'll do here is
-    # subtract for opponent token and add for comp token
-    # once any combo equals an abs 2 then add the value their
-    # iterate through the various places based on it's location
-    # and collect the empty space
-    # once it get's to this point at least
-    # bam thinking of a move pretty quick again
+    # just pass in the previous players move to check for blocks
     if !last_move
       return nil
     end
@@ -68,14 +60,11 @@ class Computer < Player
   end
 
   def check_for_win
-    # similar logic to the win checker
-    # only this should check for 2 and then strike
-    # so ultimately should just check
-    # for a winner or a block
+    # just pass in the current players move to check for wins
     if !@comp_last_move
       return nil
     end
-
+    # thus we can distinguish a block and a win
     row, col = @comp_last_move
     scan_previous_position(row, col)
   end
@@ -103,8 +92,8 @@ class Computer < Player
     # once it get's to this point at least
     # bam thinking of a move pretty quick again
 
-    # so this method was working fine when it was just the original won? logic
     while i < game.board.grid_size
+      # checks each column
       if !(i < 0)
         row_count +=1 if game.board.cells[row] && game.board.cells[row][i] == token
         row_count-=1 if game.board.cells[row] && game.board.cells[row][i] == opp_token
@@ -115,6 +104,7 @@ class Computer < Player
         end
       end
       if !(i < 0)
+        # checks each column
         col_count+=1 if game.board.cells[i] && game.board.cells[i][col] == token
         col_count-=1 if game.board.cells[i] && game.board.cells[i][col] == opp_token
         col_position = [i, col] if game.board.cells[i] && game.board.cells[i][col] == " "
@@ -124,6 +114,7 @@ class Computer < Player
       end
       # need to ensure that it's not jumping behind - in small games not an issue
       if !(row + i < 0 || col + i < 0)
+        # checks each right ascending diagonal
         diag_count+=1 if game.board.cells[row+i] && game.board.cells[row+i][col+i] == token
         diag_count-=1 if game.board.cells[row+i] && game.board.cells[row+i][col+i] == opp_token
         diag_position = [row+i, col+i] if game.board.cells[row+i] && game.board.cells[row+i][col+i] == " "
@@ -132,6 +123,7 @@ class Computer < Player
         end
       end
       if !(row + i < 0 || col - i < 0)
+        # checks each right descending diagonal
         back_diag_count+=1 if game.board.cells[row+i] && game.board.cells[row+i][col-i] == token
         back_diag_count-=1 if game.board.cells[row+i] && game.board.cells[row+i][col-i] == opp_token
         back_diag_position = [row+i, col-i] if game.board.cells[row+i] && game.board.cells[row+i][col-i] == " "

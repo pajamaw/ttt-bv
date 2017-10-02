@@ -18,6 +18,7 @@ class Board
   end
 
   def update(row, column, player)
+    # use count for some easy short cirtuits 
     @cells[row][column] = player
     @count +=1
     @cells
@@ -54,6 +55,7 @@ class Board
   end
 
   def user_input_to_nested_index(input)
+    # this is a short ciruit to allow the computer move method a bit easier time
     if input.is_a?(Array)
       return input
     end

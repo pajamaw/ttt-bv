@@ -20,6 +20,7 @@ class Game
   end
 
   def player_2=(player_2)
+    # custom setter to add game to a user
     @player_2 = player_2
     @player_2.game = self
     @player_2
@@ -44,6 +45,7 @@ class Game
   def turn
     puts "Please make your move: Player #{current_player.token}"
     board.display_board
+    # setting last_move in order to be used by the computer
     current_player.last_move = @last_move
     input = current_player.move
     puts `clear`
@@ -53,6 +55,7 @@ class Game
       @last_move = [row, position]
       #persisting this for the use of the computer
       c_p_token = current_player.token
+      # persisting for the use of won
       board.update(row, position, c_p_token)
       won?(row, position, c_p_token) ? @winner = won?(row, position, c_p_token) : nil
     else
@@ -67,6 +70,7 @@ class Game
   end
 
   def turn_count
+    # jsut an conveninence
     board.count
   end
 
@@ -125,6 +129,7 @@ class Game
       i+=1
     end
     false
+  end
     # in order for this to work you need a whole different idea for diagonals
     # since you don't need to just check the middle you need to check combo's in a row
   #   1 |  2 |  x |  4 |  5 |  6
@@ -138,11 +143,6 @@ class Game
   #  25 | 26 | o | 28 | 29 | 30
   #  ---- ---- ---- ---- ---- ----
   #  31 | 32 | 33 | 34 | 35 | 36
-  # actually it may be easier
-  # you can get this done with two conditions on each side
-  # either the last element put in is the middle one
-  # or it's one of the ends
-  # so you check
 
   # 1) x+1, y+1 && x+2, y+2 bottom left of asc
   # 2) x-1, y-1 && x-2, y-2 top right of asc
@@ -152,9 +152,6 @@ class Game
 
   # 5) x+1, y-1 && x+2, y-2 top left of desc
   # 6) x-1, y+1 && x-2, y+2 bottom right of desc
-
-  end
-
 
   def draw?
     board.full_board?

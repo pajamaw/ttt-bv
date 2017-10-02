@@ -1,7 +1,9 @@
 # TTT-BV
 
 # How to Play the Game
-Clone the repository then run `ruby bin/run_game`
+Clone the repository
+`git clone git@github.com:pajamaw/ttt-bv.git`
+run `ruby bin/run_game`
 
 
 # Rough overview
