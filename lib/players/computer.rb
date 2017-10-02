@@ -14,10 +14,10 @@ class Computer < Player
       puts "Thinking about this move..."
       sleep 2
       @comp_last_move = check_for_double
-    elsif game.turn_count < 3
+    elsif game.turn_count < 2
       @comp_last_move = best_starters
     else
-      @comp_last_move = game.board.user_input_to_nested_index(rand(1..game.board.grid_size**2))
+      @comp_last_move = grab_neighbor
     end
   end
 
@@ -37,6 +37,16 @@ class Computer < Player
   def grab_corner_position
     # basic advantageous spot
     [[0, game.board.grid_size-1], [game.board.grid_size-1, game.board.grid_size-1], [0,0], [game.board.grid_size-1, 0]].sample
+  end
+  def grab_neighbor
+    [
+      [@comp_last_move[0]-1, @comp_last_move[1]],
+      [@comp_last_move[0]-1, @comp_last_move[1]-1],
+      [@comp_last_move[0]-1, @comp_last_move[1]+1],
+      [@comp_last_move[0]+1, @comp_last_move[1]],
+      [@comp_last_move[0]+1, @comp_last_move[1]-1],
+      [@comp_last_move[0]+1, @comp_last_move[1]+1]
+    ].sample
   end
 
   def check_for_double
