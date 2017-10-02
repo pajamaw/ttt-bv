@@ -29,10 +29,10 @@ Rough overview
       - **random first player**
       - play game
         - winner is declared
-      - recursive to go through steps again
-    - write test -> add code
+      - **recursive to go through steps again**
+    - **write test -> add code**
     - **add additional features**
       - **make it adjustable**
-        - change the rules?
+        - **change the rules?**
       - **random first**
-      - make it a downloadable gem
+      - make it a downloadable gem (next time)

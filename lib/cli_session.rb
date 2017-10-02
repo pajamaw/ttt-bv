@@ -19,6 +19,7 @@ class CliSession
     # get number of players
     # verify that's valid
     how_many_players
+
     # get tokens for players
     choose_tokens
 
@@ -78,6 +79,7 @@ class CliSession
   end
 
   def choose_tokens
+    puts `clear`
     if @number_of_humans == 1
       puts "Would you like to be:"
       puts "1) X"
@@ -109,6 +111,7 @@ class CliSession
   end
 
   def choose_position
+    puts `clear`
     @random = nil # set the value first
     if @number_of_humans == 1
       puts "Would you like the:"
@@ -147,6 +150,7 @@ class CliSession
   end
 
   def choose_size_of_grid
+    puts `clear`
     puts "Input the size of the grid you'd like to play upon"
     puts "For example: for the classic 3 x 3 grid you'd type '3'"
     input = gets.strip
@@ -159,6 +163,7 @@ class CliSession
   end
 
   def choose_win_length
+    puts `clear`
     puts "Input the length of the combo it will take to win"
     puts "For example: for the classic 3 x 3 ttt game you'd type '3'"
     puts "In this manner you can play a 5 x 5 game with the rule of 3"

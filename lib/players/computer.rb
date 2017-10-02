@@ -11,14 +11,13 @@ class Computer < Player
     # just a place holder for now
       # with check_for_two the game becomes unbeatable
     if check_for_double && game.turn_count > 2
-      puts "Thinking about this move"
+      puts "Thinking about this move..."
       sleep 2
       @comp_last_move = check_for_double
     elsif game.turn_count < 3
-      sleep 2
-        @comp_last_move = best_starters
+      @comp_last_move = best_starters
     else
-        @comp_last_move = game.board.user_input_to_nested_index(rand(1..game.board.grid_size**2))
+      @comp_last_move = game.board.user_input_to_nested_index(rand(1..game.board.grid_size**2))
     end
   end
 
@@ -38,17 +37,12 @@ class Computer < Player
     [[0, game.board.grid_size-1], [game.board.grid_size-1, game.board.grid_size-1], [0,0], [game.board.grid_size-1, 0]].sample
   end
 
-  def simple_move
-    rand(1...game.board.grid_size**2)
-  end
-
-
   def check_for_double
     if check_for_win
-      puts "checked for win"
+      puts "Going for the Win!"
       check_for_win
     else
-      puts "checked for blocks"
+      puts "Nice try!"
       check_for_block
     end
   end
@@ -108,59 +102,6 @@ class Computer < Player
     # and collect the empty space
     # once it get's to this point at least
     # bam thinking of a move pretty quick again
-    # while i < game.board.grid_size
-    # while i < board.grid_size
-    #   if !(col+i < 0)
-    #     if game.board.cells[row][col+i] == player_token
-    #       row_count+=1
-    #       if row_count == win_length
-    #         return player_token
-    #       end
-    #     else
-    #       # restarts if not 0
-    #       row_count = 0
-    #     end
-    #   end
-    #   if !(row + i < 0)
-    #     if game.board.cells[row+i] && game.board.cells[row+i][col] == player_token
-    #       col_count+=1
-    #       if col_count == win_length
-    #         return player_token
-    #       end
-    #     else
-    #       col_count = 0
-    #     end
-    #   end
-    #   if !(col + i < 0 || row + i < 0)
-    #     if game.board.cells[row+i] && game.board.cells[row+i][col+i] == player_token
-    #       diag_count+=1
-    #       if diag_count == win_length
-    #         return player_token
-    #       end
-    #     else
-    #       diag_count=0
-    #     end
-    #   end
-    #   if !(col - i < 0 || row + i < 0)
-    #     if game.board.cells[row+i] && game.board.cells[row+i][col-i] == player_token
-    #       back_diag_count+=1
-    #       if back_diag_count == win_length - 1
-    #         return player_token
-    #       end
-    #     else
-    #       back_diag_count=0
-    #     end
-    #   end
-    #   i+=1
-    # end
-    #
-
-
-
-
-
-
-
 
     # so this method was working fine when it was just the original won? logic
     while i < game.board.grid_size

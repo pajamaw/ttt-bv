@@ -25,20 +25,6 @@ describe "Game" do
       expect(default_game.player_2).to be_an_instance_of(Computer)
     end
   end
-  describe "#user_input_to_nested_index" do
-    it "converts a string number referencing the visual board into an array for row and position" do
-      input = "1"
-      expect(default_game.user_input_to_nested_index(input)).to eq([0,0])
-    end
-    it "converts a string number referencing the visual board into an array for row and position" do
-      input = "5"
-      expect(default_game.user_input_to_nested_index(input)).to eq([1,1])
-    end
-    it "converts a string number referencing the visual board into an array for row and position for larger boards" do
-      input = "7"
-      expect(game_5.user_input_to_nested_index(input)).to eq([1,1])
-    end
-  end
 
   describe "#current_player" do
     it "returns player_1 if the turn_count is even" do
@@ -60,7 +46,7 @@ describe "Game" do
     it "checks to see if the input is valid" do
       input = "1"
       expect(default_game.player_1).to receive(:gets).and_return(input)
-      row, position = default_game.user_input_to_nested_index(input)
+      row, position = default_game.board.user_input_to_nested_index(input)
       expect(default_game.board.valid_move?(row, position)).to eq(true)
       expect{default_game.turn}.to output.to_stdout
       default_game.board.reset!

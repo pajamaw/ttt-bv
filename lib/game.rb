@@ -35,7 +35,6 @@ class Game
   end
 
   def play
-    board.display_board
     until @winner || draw?
       turn
     end
@@ -44,9 +43,10 @@ class Game
 
   def turn
     puts "Please make your move: Player #{current_player.token}"
+    board.display_board
     current_player.last_move = @last_move
     input = current_player.move
-    puts "#{input}"
+    puts `clear`
     # save the previous row and position not fair for the comp
     row, position = board.user_input_to_nested_index(input)
     if board.valid_move?(row, position)
@@ -54,7 +54,6 @@ class Game
       #persisting this for the use of the computer
       c_p_token = current_player.token
       board.update(row, position, c_p_token)
-      board.display_board
       won?(row, position, c_p_token) ? @winner = won?(row, position, c_p_token) : nil
     else
       puts "Invalid position"
@@ -75,7 +74,7 @@ class Game
     if turn_count < (win_length * 2) - 1
       return false
     end
-    i = -2
+    i = -(win_length - 1)
     row_win = 0
     col_win = 0
     diag_win = 0

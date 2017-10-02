@@ -87,4 +87,18 @@ describe "Board" do
       board.reset!
     end
   end
+  describe "#user_input_to_nested_index" do
+    it "converts a string number referencing the visual board into an array for row and position" do
+      input = "1"
+      expect(board.user_input_to_nested_index(input)).to eq([0,0])
+    end
+    it "converts a string number referencing the visual board into an array for row and position" do
+      input = "5"
+      expect(board.user_input_to_nested_index(input)).to eq([1,1])
+    end
+    it "converts a string number referencing the visual board into an array for row and position for larger boards" do
+      input = "7"
+      expect(board5.user_input_to_nested_index(input)).to eq([1,1])
+    end
+  end
 end

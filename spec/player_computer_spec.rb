@@ -11,10 +11,9 @@ describe "Computer" do
   end
   describe '#move' do
     it "randomly selects an integer between 1 and the size of the grid squared" do
-      board = Board.new
       expect(comp_playerx).to respond_to(:move)
-      expect(comp_playerx.move(board, [])).to be_an_instance_of(Array)
-      expect(comp_playerx.move(board, [])).to be_an_instance_of(Array)
+      comp_playerx.game = Game.new
+      expect(comp_playerx.move).to be_an_instance_of(Array)
     end
   end
 end
