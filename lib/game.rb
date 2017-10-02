@@ -27,8 +27,6 @@ class Game
   end
 
   def make_random
-    curr_player_1 = @player_1
-    curr_player_2 = @player_2
     if rand(1..1000).even?
       @player_1, @player_2 = player_2, player_1
     end

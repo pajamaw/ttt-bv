@@ -1,11 +1,24 @@
 # TTT-BV
 
-# How to Play the Game
+## Features:
+- Interactive CLI
+- Adjustable Grid Sizing
+- Smart AI
+- Adjustable Rules - You decide the number of tokens in a row to win the game!
+- Classic 3x3 tic tac toe!
+- Human vs Human games
+- Human vs Computer games
+- Countless seconds of fun!
+
+## How to Play the Game
 Clone the repository
 `git clone git@github.com:pajamaw/ttt-bv.git`
 run `ruby bin/run_game`
+And follow along with the directions!
 
-# How the win algorithm works
+
+## Technical Details
+### How the win algorithm works
 - o(1) space
 - worst case it's done in about O(a+b) time where a and b are the winlength and grid_size
  - The algorithm relies upon two main things
@@ -27,7 +40,7 @@ run `ruby bin/run_game`
   - if the winner is not found once the counter reaches the length of the board size it returns false
 
 
-# Rough overview
+### Rough overview
 - include examples of
   - **inheritance**
   - **polymorphism**
