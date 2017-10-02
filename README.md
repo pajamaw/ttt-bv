@@ -1,9 +1,10 @@
-# ttt-bv
+# TTT-BV
 
-# How to run
+# How to Play the Game
 Clone the repository then run `ruby bin/run_game`
 
-Rough overview
+
+# Rough overview
 - include examples of
   - **inheritance**
   - **polymorphism**
@@ -16,10 +17,11 @@ Rough overview
     - **player**
       - computer
         - unbeatable
+          - on three at least
       - **human**
   - rules
     - **should i say that you must win according to game size?**
-    - or that it's always just three?
+    - **or that it's always just three?
       - could do both i guess since the first is already implemented
   - cli
     - outline game
@@ -27,7 +29,7 @@ Rough overview
         - **choose who's what token
       - Decide on size of board
       - **random first player**
-      - play game
+      - **play game
         - winner is declared
       - **recursive to go through steps again**
     - **write test -> add code**
