@@ -83,15 +83,18 @@ describe "Game" do
     end
   end
   describe "#won?" do
-    it "checks the current state of the board cell for three player tokens in a row and returns the winning token" do
+    it "checks the current state of the board cell for a desired number of  player tokens in a row and returns the winning token" do
       default_game.board.count = 5
       default_game.board.cells = [[" ", " ", " "], ["X", "X", "X"], [" ", " ", " "]]
       expect(default_game.won?(1, 0, "X")).to eq("X")
-
       default_game.board.cells = [[" ", " ", " "], ["X", "X", "X"], [" ", " ", " "]]
       expect(default_game.won?(1, 1, "X")).to eq("X")
     end
-
+    it "checks the winning combination based upon the win_length of the game" do
+      default_game.win_length = 4
+      default_game.board.cells = [[" ", " ", " ", " "], ["X", "X", "X", " "], [" ", " ", " ", " "]]
+      expect(default_game.won?(1, 0, "X")).to eq(false)
+    end
     it "returns false for a non-winning combination" do
       expect(default_game.won?(0, 0, "X")).to eq(false)
     end
@@ -99,5 +102,6 @@ describe "Game" do
       default_game.board.count = 1
       expect(default_game.won?(0, 0, "X")).to eq(false)
     end
+
   end
 end
